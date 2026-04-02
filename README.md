@@ -1,46 +1,46 @@
 # Flask LLM Demo
 
-A small Flask app that uses an OpenAI-compatible chat model for both chat and search. The project includes a simple browser UI, health/config endpoints, and a lightweight test suite.
+A small Flask app that uses an OpenAI-compatible chat model for both chat and search. The project includes a browser UI, health/config endpoints, and a lightweight test suite.
 
 ## What It Does
 
 - answers questions through `POST /chat`
-- returns LLM-generated search-style results through `GET /search`
+- returns LLM-generated answers through `GET /search`
 - exposes `/health`, `/stats`, and `/config-check`
 - supports OpenAI-compatible providers, including OpenRouter
 
-This project is now LLM-only:
+This project is LLM-only:
 
 - no local knowledge base
 - no embeddings
-- no FAISS index
+- no vector index
 - no ingestion pipeline
 
 ## Project Structure
 
 ```text
 flask_rag/
-├── app/
-│   ├── services/
-│   │   ├── assistant.py
-│   │   ├── diagnostics.py
-│   │   └── llm.py
-│   ├── static/
-│   │   ├── app.css
-│   │   └── app.js
-│   ├── templates/
-│   │   └── index.html
-│   ├── config.py
-│   ├── routes.py
-│   ├── run.py
-│   ├── serve.py
-│   ├── wsgi.py
-│   └── __init__.py
-├── tests/
-│   └── test_app.py
-├── .env.example
-├── requirements.txt
-└── README.md
+|-- app/
+|   |-- services/
+|   |   |-- assistant.py
+|   |   |-- diagnostics.py
+|   |   `-- llm.py
+|   |-- static/
+|   |   |-- app.css
+|   |   `-- app.js
+|   |-- templates/
+|   |   `-- index.html
+|   |-- config.py
+|   |-- routes.py
+|   |-- run.py
+|   |-- serve.py
+|   |-- wsgi.py
+|   `-- __init__.py
+|-- tests/
+|   `-- test_app.py
+|-- .env.example
+|-- requirements.txt
+`-- README.md
 ```
 
 ## Setup
@@ -117,4 +117,4 @@ cd f:\Python_learning\flask_rag
 
 - wrong or unclear input is instructed to return `"I don't know."`
 - simple math can be answered directly by the model
-- citations are currently disabled because there is no retrieval layer
+- citations are currently disabled because there is no grounding layer

@@ -30,7 +30,7 @@ function renderStats(stats) {
   state.stats = stats;
   setText("knowledge-rows", String(stats.knowledge_rows ?? "--"));
   setText("indexed-chunks", String(stats.indexed_chunks ?? "--"));
-  setText("retrieval-mode", stats.mode || "llm_only");
+  setText("runtime-mode", stats.mode || "llm_only");
   renderJson("stats-json", stats);
 }
 
@@ -54,7 +54,7 @@ function renderCitations(citations) {
 
   for (const citation of citations) {
     const item = document.createElement("li");
-    item.textContent = `${citation.title} • ${citation.source} • ${citation.category}`;
+    item.textContent = `${citation.title} | ${citation.source} | ${citation.category}`;
     list.appendChild(item);
   }
 }
@@ -109,7 +109,7 @@ async function handleChatSubmit(event) {
       body: JSON.stringify({ message }),
     });
     setText("chat-reply", payload.reply || "No reply returned.");
-    setText("chat-mode", payload.retrieval_mode || "unknown");
+    setText("chat-mode", payload.response_mode || "unknown");
     renderCitations(payload.citations || []);
   } catch (error) {
     setText("chat-reply", error.message);
@@ -120,7 +120,6 @@ async function handleChatSubmit(event) {
 async function handleSearchSubmit(event) {
   event.preventDefault();
   const query = document.getElementById("search-query").value.trim();
-  const topK = document.getElementById("search-top-k").value || "3";
 
   if (!query) {
     renderSearchResults({ mode: "none", results: [] });
@@ -129,7 +128,7 @@ async function handleSearchSubmit(event) {
 
   setText("search-mode", "running");
   try {
-    const payload = await fetchJson(`/search?q=${encodeURIComponent(query)}&top_k=${encodeURIComponent(topK)}`);
+    const payload = await fetchJson(`/search?q=${encodeURIComponent(query)}`);
     renderSearchResults(payload);
   } catch (error) {
     const container = document.getElementById("search-results");

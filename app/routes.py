@@ -29,7 +29,6 @@ def config_check():
         {
             "app_env": os.getenv("APP_ENV", "development"),
             "openai_api_key_loaded": bool(api_key),
-            "openai_api_key_prefix": api_key[:10] if api_key else "",
             "openai_base_url": os.getenv("OPENAI_BASE_URL", ""),
             "openai_chat_model": os.getenv("OPENAI_CHAT_MODEL", "gpt-4o-mini"),
         }
@@ -39,13 +38,11 @@ def config_check():
 @main.route("/search", methods=["GET"])
 def search():
     query = (request.args.get("q") or "").strip()
-    top_k = request.args.get("top_k", default=3, type=int)
 
     if not query:
         return jsonify({"error": "Missing query parameter 'q'"}), 400
 
-    top_k = max(1, min(top_k, 10))
-    payload = search_answers(query, top_k=top_k)
+    payload = search_answers(query)
     return jsonify({"query": query, **payload}), 200
 
 @main.route("/chat", methods=["POST"])

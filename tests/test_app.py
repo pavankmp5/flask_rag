@@ -66,7 +66,7 @@ class FlaskRagAppTests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             self.assertIn("reply", payload)
             self.assertIn("citations", payload)
-            self.assertIn("retrieval_mode", payload)
+            self.assertIn("response_mode", payload)
 
     def test_chat_uses_llm_for_math(self):
         with patch("app.services.assistant.generate_response", return_value="225"):
@@ -74,7 +74,7 @@ class FlaskRagAppTests(unittest.TestCase):
             payload = response.get_json()
             self.assertEqual(response.status_code, 200)
             self.assertIn("225", payload["reply"])
-            self.assertEqual(payload["retrieval_mode"], "llm")
+            self.assertEqual(payload["response_mode"], "llm")
 
 
 if __name__ == "__main__":

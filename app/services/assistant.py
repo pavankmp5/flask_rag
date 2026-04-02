@@ -72,5 +72,5 @@ def handle_query(user_input):
     return {
         "reply": reply,
         "citations": [],
-        "retrieval_mode": "llm" if reply != UNSUPPORTED_REPLY else "none",
+        "response_mode": "llm" if reply != UNSUPPORTED_REPLY else "none",
     }
