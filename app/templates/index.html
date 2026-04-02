@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Flask LLM Demo</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Flask LLM Demo</p>
+        <h1>Search, chat, and inspect your LLM app in one place.</h1>
+        <p class="hero-text">
+          This demo layers a usable interface on top of your Flask API so you can try direct LLM answers,
+          inspect search responses, and review runtime health in one place.
+        </p>
+        <div class="hero-actions">
+          <button class="ghost-button" data-fill-chat="What is Dubai?">Try Chat</button>
+          <button class="ghost-button" data-fill-search="Dubai">Try Search</button>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <div class="status-grid" id="status-grid">
+          <article class="status-card">
+            <span class="status-label">Knowledge Rows</span>
+            <strong id="knowledge-rows">--</strong>
+          </article>
+          <article class="status-card">
+            <span class="status-label">Indexed Chunks</span>
+            <strong id="indexed-chunks">--</strong>
+          </article>
+          <article class="status-card">
+            <span class="status-label">Runtime Mode</span>
+            <strong id="retrieval-mode">--</strong>
+          </article>
+          <article class="status-card">
+            <span class="status-label">Provider</span>
+            <strong id="provider-base-url">--</strong>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Chat</p>
+            <h2>Ask the assistant</h2>
+          </div>
+          <span class="pill">POST /chat</span>
+        </div>
+        <form id="chat-form" class="stack">
+          <label class="field">
+            <span>Message</span>
+            <textarea id="chat-message" rows="4" placeholder="Ask a question or try a simple calculation."></textarea>
+          </label>
+          <div class="button-row">
+            <button type="submit" class="primary-button">Send Message</button>
+            <button type="button" class="ghost-button" id="chat-sample">Load Sample</button>
+          </div>
+        </form>
+        <div class="result-card">
+          <div class="result-header">
+            <h3>Response</h3>
+            <span id="chat-mode" class="pill subtle">--</span>
+          </div>
+          <pre id="chat-reply" class="result-body">No response yet.</pre>
+          <div>
+            <h4>Citations</h4>
+            <ul id="chat-citations" class="citation-list"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Search</p>
+            <h2>Inspect LLM answers</h2>
+          </div>
+          <span class="pill">GET /search</span>
+        </div>
+        <form id="search-form" class="stack">
+          <label class="field">
+            <span>Query</span>
+            <input id="search-query" type="text" placeholder="Dubai">
+          </label>
+          <label class="field field-small">
+            <span>Top K</span>
+            <input id="search-top-k" type="number" min="1" max="10" value="3">
+          </label>
+          <div class="button-row">
+            <button type="submit" class="primary-button">Run Search</button>
+            <button type="button" class="ghost-button" id="search-sample">Load Sample</button>
+          </div>
+        </form>
+        <div class="result-card">
+          <div class="result-header">
+            <h3>Search Results</h3>
+            <span id="search-mode" class="pill subtle">--</span>
+          </div>
+          <div id="search-results" class="search-results">
+            <p class="empty-state">No search results yet.</p>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <section class="panel diagnostics">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Diagnostics</p>
+          <h2>Runtime configuration</h2>
+        </div>
+      </div>
+      <div class="diagnostic-grid">
+        <article class="diagnostic-card">
+          <h3>/stats</h3>
+          <pre id="stats-json" class="result-body compact">Loading stats...</pre>
+        </article>
+        <article class="diagnostic-card">
+          <h3>/config-check</h3>
+          <pre id="config-json" class="result-body compact">Loading config...</pre>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body>
+</html>
